@@ -1,0 +1,216 @@
+CREATE SEQUENCE ID START WITH 19;
+
+CREATE TABLE CONCURRENT(
+        id varchar(7) PRIMARY KEY,
+        prenom varchar(20),
+        voiture varchar(20),
+        pointfin int
+);
+
+INSERT INTO CONCURRENT values
+        ('CCR001','Rindra','Peugeot 206',0);
+INSERT INTO CONCURRENT values
+        ('CCR002','Matthieu','Mitsubishi EVO VI',0);
+INSERT INTO CONCURRENT values
+        ('CCR003','Fanilo','GOLF 1',0);
+
+
+CREATE TABLE COMPETITION(
+        id varchar(7) PRIMARY KEY,
+        nom varchar(10),
+        datecomp varchar(10) , 
+        coef int
+);
+
+INSERT INTO COMPETITION values
+        ('CPT001' , 'Numero1' , '12-10-2017' , 5 );
+INSERT INTO COMPETITION values
+        ('CPT002' , 'Numero2' , '26-01-2017' , 4 );
+INSERT INTO COMPETITION values
+        ('CPT003' , 'Numero3' , '17-03-2017' , 1 );
+
+
+CREATE TABLE CATEGORIE(
+        ID varchar(7) PRIMARY KEY,
+        nom varchar(10)
+);
+
+INSERT INTO CATEGORIE values
+        ('CTG001','Categ A');
+INSERT INTO CATEGORIE values
+        ('CTG002','Categ B');
+INSERT INTO CATEGORIE values
+        ('CTG003','Categ C');
+
+CREATE TABLE COMPETCATEG(
+        id varchar(7) PRIMARY KEY,
+        idcon varchar(7),
+        idcat varchar(7),
+        FOREIGN KEY(idcon) REFERENCES CONCURRENT(id),
+        FOREIGN KEY(idcat) REFERENCES CATEGORIE(id)
+);
+
+
+
+INSERT INTO COMPETCATEG values
+        ('CPG001','CCR001','CTG001');
+INSERT INTO COMPETCATEG values
+        ('CPG002','CCR001','CTG002');
+INSERT INTO COMPETCATEG values
+        ('CPG003','CCR001','CTG003');
+INSERT INTO COMPETCATEG values
+        ('CPG004','CCR002','CTG001');
+INSERT INTO COMPETCATEG values
+        ('CPG005','CCR003','CTG002');
+INSERT INTO COMPETCATEG values
+        ('CPG006','CCR002','CTG002');
+INSERT INTO COMPETCATEG values
+        ('CPG007','CCR003','CTG003');        
+
+        
+CREATE TABLE COMPETAPE(
+        id varchar(7) PRIMARY KEY,
+        idcomp varchar(7),
+        distance int, //atao number(10,2)
+        FOREIGN KEY (idcomp) REFERENCES COMPETITION(id)
+);
+
+
+INSERT INTO COMPETAPE values
+                ('CPE001','CPT001',3850);
+INSERT INTO COMPETAPE values
+                ('CPE002','CPT001',3760);
+INSERT INTO COMPETAPE values
+                ('CPE003','CPT002',3120);
+INSERT INTO COMPETAPE values
+                ('CPE004','CPT002',3333);
+INSERT INTO COMPETAPE values
+                ('CPE005','CPT003',3262);
+INSERT INTO COMPETAPE values
+                ('CPE006','CPT003',4500);
+
+
+CREATE TABLE RESULTPOINT(
+        id varchar(7) PRIMARY KEY,
+        idcomp varchar(7),
+        rang int,
+        point int,
+        FOREIGN KEY(idcomp) REFERENCES COMPETITION(id)
+);
+
+
+INSERT INTO RESULTPOINT values
+                ('RSP001' , 'CPT001' , 1 , 35);
+INSERT INTO RESULTPOINT values
+                ('RSP002' , 'CPT001' , 2 , 20);
+INSERT INTO RESULTPOINT values
+                ('RSP003' , 'CPT001' , 3  ,15);
+INSERT INTO RESULTPOINT values
+                ('RSP004' , 'CPT002' , 1 , 45);
+INSERT INTO RESULTPOINT values
+                ('RSP005' , 'CPT002' , 2 , 20);
+INSERT INTO RESULTPOINT values
+                ('RSP006' , 'CPT002' , 3 , 15);
+INSERT INTO RESULTPOINT values
+                ('RSP007' , 'CPT003' , 1 , 30);
+INSERT INTO RESULTPOINT values
+                ('RSP008' , 'CPT003' , 2 , 25);
+INSERT INTO RESULTPOINT values
+                ('RSP009' , 'CPT003' , 3 , 5);
+        
+
+
+CREATE TABLE TEMPREALISE(
+        id varchar(7) PRIMARY KEY,
+        idconc varchar(7),
+        idcompetape varchar(7),
+        temps int , //atao number(10,2)
+        remarque varchar(30),
+        FOREIGN KEY(idconc) REFERENCES CONCURRENT(id),
+        FOREIGN KEY(idcompetape) REFERENCES COMPETAPE(id)
+);
+
+INSERT INTO TEMPREALISE values
+                ('TPR001' , 'CCR001' , 'CPE001' , 530 , 'Trop Moyen');
+INSERT INTO TEMPREALISE values
+                ('TPR002' , 'CCR001' , 'CPE002' , 654 , 'Long dans virages');
+INSERT INTO TEMPREALISE values
+                ('TPR003' , 'CCR001' , 'CPE003' , 536 , 'Trop Moyen');
+INSERT INTO TEMPREALISE values
+                ('TPR004' , 'CCR001' , 'CPE004' , 487 , 'Bon');
+INSERT INTO TEMPREALISE values
+                ('TPR005' , 'CCR001' , 'CPE005' , 539 , 'Trop Moyen');
+INSERT INTO TEMPREALISE values
+                ('TPR006' , 'CCR001' , 'CPE006' , 561 , 'Virage moyen');
+INSERT INTO TEMPREALISE values
+                ('TPR007' , 'CCR002' , 'CPE001' , 444 , 'Meilleur temps');
+INSERT INTO TEMPREALISE values
+                ('TPR008' , 'CCR002' , 'CPE002' , 453 , 'Amelioration');
+INSERT INTO TEMPREALISE values
+                ('TPR009' , 'CCR002' , 'CPE003' , 530 , 'Trop Moyen');
+INSERT INTO TEMPREALISE values
+                ('TPR010' , 'CCR002' , 'CPE004' , 539 , 'Trop Moyen');
+INSERT INTO TEMPREALISE values
+                ('TPR011' , 'CCR002' , 'CPE005' , 536 , 'Trop Moyen');
+INSERT INTO TEMPREALISE values
+                ('TPR012' , 'CCR002' , 'CPE006' , 856 , 'Voiture abimée');
+INSERT INTO TEMPREALISE values
+                ('TPR013' , 'CCR003' , 'CPE001' , 5000 , 'Abandon');
+INSERT INTO TEMPREALISE values
+                ('TPR014' , 'CCR003' , 'CPE002' , 654 , 'Pas bon');
+INSERT INTO TEMPREALISE values
+                ('TPR015' , 'CCR003' , 'CPE003' , 530 , 'Trop Moyen');
+INSERT INTO TEMPREALISE values
+                ('TPR016' , 'CCR003' , 'CPE004' , 536 , 'Trop Moyen');
+INSERT INTO TEMPREALISE values
+                ('TPR017' , 'CCR003' , 'CPE005' , 531 , 'Trop Moyen');
+INSERT INTO TEMPREALISE values
+                ('TPR018' , 'CCR003' , 'CPE006' , 589 , 'Trop juste');
+
+
+
+
+//////////////////////////////SQL////////////////////////////////////////
+
+
+select idconc , sum(temps) as somme 
+from temprealise 
+group by idconc 
+order by somme asc ;
+
+
+///////par competition////////////
+select c.id , sum(temps) as somme 
+from temprealise 
+join CONCURRENT c
+ON TEMPREALISE.idconc=c.id
+join COMPETAPE
+ON TEMPREALISE.idcompetape=COMPETAPE.id
+join COMPETITION
+ON COMPETAPE.idcomp=COMPETITION.id
+where COMPETITION.nom='Numero1'
+group by c.id 
+order by somme asc 
+;
+
+///////general////////////////
+
+select c.id , sum(temps) as somme
+from temprealise
+join CONCURRENT c
+ON TEMPREALISE.idconc=c.id
+group by c.id
+order by somme asc ;
+
+
+select prenom , sum(temps) as somme 
+from temprealise 
+join CONCURRENT ON TEMPREALISE.idconc=CONCURRENT.id 
+join COMPETCATEG ON CONCURRENT.id=COMPETCATEG.idcon 
+where COMPETCATEG.idcat='CTG003' 
+group by prenom 
+order by somme asc 
+;
+
+
+select c.id , sum(temps) as somme from temprealise join CONCURRENT c ON TEMPREALISE.idconc=c.id join COMPETAPE ON TEMPREALISE.idcompetape=COMPETAPE.id and join COMPETITION ON COMPETAPE.idcomp=COMPETITION.id where COMPETITION.id='CPT001' and ic.id='CCR001' group by c.id order by somme asc
